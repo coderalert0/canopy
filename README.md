@@ -1,20 +1,40 @@
-The repository contains a basic Github client for its REST API.
+# GitHub REST Client (Ruby)
 
-## Requirements
-* Ruby 3.1
-* Access to at least one Github repository
-* Please create a personal access token for your personal account so that the Github API requests work. The repository is public, so any token will work.
+This is a ruby command-line application to fetch and display GitHub issues from any public repository using the GitHub REST API. Features include fetching **open or closed issues**, automatically handling **pagination** to retrieve all issues, displaying issues sorted by `created_at` (for open issues) or `closed_at` (for closed issues), minimal dependencies (`httparty` and `logger`), and full test coverage with **RSpec + WebMock**.
 
-## Instructions
-It needs to be run at the command line like this
+To set up, clone the repository and install dependencies:
 
-```
-TOKEN=github_pat_xxx ruby process.rb <repository URL, like https://api.github.com/repos/user_or_organization/repo>
+```bash
+git clone https://github.com/coderalert0/canopy
+cd canopy
+bundle install
 ```
 
-The code implements only one method in the API - `issues`. It outputs up to 50 issues in the provided repository. It lets you set whether the
-issues returned are open or closed, and then displays them in decreasing order of date as follows:
+Export your GitHub personal access token:
+```
+export TOKEN=your_personal_access_token
+```
 
-1. If you selected open issues, the date used is the issue's created date.
-1. Else, it's the issues' closed date.
+To fetch closed issues from a repository:
+```
+ruby process.rb https://api.github.com/repos/paper-trail-gem/paper_trail
+```
 
+To fetch open issues, pass the --open flag:
+```
+ruby process.rb https://api.github.com/repos/paper-trail-gem/paper_trail --open
+```
+
+Sample output:
+```
+Polymorphic `whodunnit` - closed - Closed at: 2025-07-28T02:11:46Z
+Homogenize the effects of the `synchronize_version_creation_timestamp` option - closed - Closed at: 2025-07-14T02:11:34Z
+Homogenize effects of synchronize_version_creation_timestamp for create event - closed - Closed at: 2025-07-14T02:11:33Z
+```
+
+Run tests using:
+```
+bundle exec rspec
+```
+
+Notes: only the REST API is implemented (no GraphQL), pagination is automatic, logger is used for formatted output, fully tested with mock responses
